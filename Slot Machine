@@ -1,0 +1,147 @@
+import random
+import time
+
+bal = 20  # balance of the user
+
+wheel = ['0', '✪', '✪', '$', '✈', '✈', '♞', '♞', '✚', '✚']
+
+ques1 = input('Do you want to test your luck at the slot machine? y/n - ')
+if ques1 == 'y' or ques1 == '':
+    print("Okay! Here's 20$ to start you off with!")
+else:
+    print('Alright! See you another day!')
+    exit()
+flag = True
+
+while flag is True:
+    def dotdotdot():
+        print('.', end='')
+        time.sleep(0.5)
+        print('.', end='')
+        time.sleep(0.5)
+        print('.')
+        time.sleep(0.5)
+
+    def tripledollar(x):
+        print('WOW TRIPLE DOLLAR COMBO!')
+        return x * 10
+
+    def doubledollar(x):
+        print('WOW DOUBLE DOLLAR COMBO!')
+        return x * 5
+
+    def triple(x):
+        print('WOW! TRIPLE COMBO!')
+        return x * 3
+
+    def double(x):
+        print('DOUBLE COMBO!')
+        return x+(bet*2)
+    def doubleends(x):
+        print('WOW! DOUBLE ENDS COMBO!')
+        return x+(bet*3)
+
+
+    bet = float(input('Enter your bet amount - $ '))
+
+    while True:
+        if not bal-bet >= 0:
+            bet = float(input('You cannot bet more than your current balance! Please enter a valid bet - $ '))
+        else:
+            break
+
+    if bal == 0:
+        print("Let's hope you win big!")
+        print("Or you need to go home", end='')
+        time.sleep(0.5)
+        dotdotdot()
+        time.sleep(0.5)
+
+    flag2 = True
+    while True:
+        enter = input("Press Enter to spin or 'x' to Exit! ")
+        if enter == '':
+            bal -= bet
+            print('Subtracting', bet, '$ ', end='')
+            time.sleep(0.2)
+            print('-', end='')
+            time.sleep(0.2)
+            print('-', end='')
+            time.sleep(0.2)
+            print('-', end='')
+            time.sleep(0.2)
+            print('> ', end='')
+            time.sleep(0.2)
+            print('New balance is ' + str(bal) + '$')
+            time.sleep(0.7)
+            print('Spinning', end='')
+            dotdotdot()
+            print('')
+            break
+        elif enter == 'x':
+            print('Alright! Your balance is {}. See you another day!'.format(bal))
+            flag2 = False
+            break
+        else:
+            print('Invalid Entry\n')
+
+
+    if not flag2:
+        break
+
+    out = []
+    def output(y):
+        for j in range(3):
+            x = random.choice(wheel)
+            # y.append(j)  was used for dictionary purposes. but is useless
+            y.append(x)
+
+    output(out)
+    print('The wheels have stopped at - ', end='')
+    for i in out:
+        time.sleep(0.7)
+        print(i, end=' ')
+    print('\n')
+    time.sleep(0.5)
+    """
+    # following exercise was to learn to work with dictionaries. Lists will work just fine.
+    def dictmake(x):  # works only if the list has consecutive pairs of key value.
+        dictnry = {x[i]:x[i + 1] for i in range(0, len(x) , 2)}
+        return dictnry
+    
+    out = dictmake(out)
+    print(out)
+    """
+
+    if '0' in out:
+        print("Oh no. There's a 0 in one of the wheels! No wins.")
+    else:
+        if out[0] == out[2]:
+            bal = doubleends(bal)
+
+        elif out[1] == out[2] or out[0] == out[1]:
+            bal = double(bal)
+
+        elif out[0] == out[1] == out[2]:
+            bal = triple(bal)
+
+        elif '$' in out and out[0] == out[1] == out[2]:
+            bal = tripledollar(bal)
+
+        elif '$' in out and out[0] == out[1] or out[1] == out[2] or out[0] == out[2]:
+            bal = doubledollar(bal)
+
+    time.sleep(0.5)
+
+    print('Your current balance is', str(bal)+'$')
+    time.sleep(1)
+    if bal == 0:
+        print('You have gone broke.. Come back another day!')
+        break
+
+    cont = input('Would you like to play again? y/n - ')
+    if cont == 'y':
+        continue
+    else:
+        print('Alright! Your balance is {}. See you another day!'.format(bal))
+        flag = False
